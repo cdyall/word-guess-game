@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    var possibleWords = ["chelsea piers","reflecting pools",
+    var wordList = ["chelsea piers","reflecting pools",
     "one world trade","empire state building","central park",
     "ststue of liberty","rockefeller center","moma", 
     "brooklyn bridge","time square","charlie parker house", 
@@ -9,10 +9,10 @@ $(document).ready(function () {
     const maxGuess = 10
     var pauseGame = false
 
-    var guessedLetters = []
-    var guessingWord = []
-    var wordToMatch
-    var numGuess
+    var pGuessed = []
+    var gWord = []
+    var mWord
+    var nGuess
     var wins = 0
 
     resetGame()
@@ -35,13 +35,13 @@ $(document).ready(function () {
         incorrectSound.setAttribute("src","assets/sounds/horn.mp3")
 
         // Search string for letter
-        for (var i=0, j= wordToMatch.length; i<j; i++) {
-            if (letter === wordToMatch[i]) {
-                guessingWord[i] = letter
+        for (var i=0, j= mWord.length; i<j; i++) {
+            if (letter === mWord[i]) {
+                gWord[i] = letter
                 foundLetter = true
                 correctSound.play()
                 // If guessing word matches random word
-                if (guessingWord.join("") === wordToMatch) {
+                if (gWord.join("") === mWord) {
                     // Increment # of wins
                     wins++
                     pauseGame = true
@@ -54,15 +54,15 @@ $(document).ready(function () {
         if (!foundLetter) {
             incorrectSound.play()
             // Check if inccorrect guess is already on the list
-            if (!guessedLetters.includes(letter)) {
+            if (!pGuessed.includes(letter)) {
                 // Add incorrect letter to guessed letter list
-                guessedLetters.push(letter)
+                pGuessed.push(letter)
                 // Decrement the number of remaining guesses
-                numGuess--
+                nGuess--
             }
-            if (numGuess === 0) {
+            if (nGuess === 0) {
                 // Display word before reseting game
-                guessingWord = wordToMatch.split()
+                gWord = mWord.split()
                 pauseGame = true
                 setTimeout(resetGame, 5000)
             }
@@ -77,24 +77,24 @@ $(document).ready(function () {
     }
 
     function resetGame() {
-        numGuess = maxGuess
+        nGuess = maxGuess
         pauseGame = false
 
         // Get a new word
-        wordToMatch = possibleWords[Math.floor(Math.random() * possibleWords.length)].toUpperCase()
-        console.log(wordToMatch)
+        mWord = wordList[Math.floor(Math.random() * wordList.length)].toUpperCase()
+        // console.log(mWord)
 
         // Reset word arrays
-        guessedLetters = []
-        guessingWord = []
+        pGuessed = []
+        gWord = []
 
         // Reset the guessed word
-        for (var i=0, j=wordToMatch.length; i < j; i++){
+        for (var i=0, j=mWord.length; i < j; i++){
             // Put a space instead of an underscore between multi word "words"
-            if (wordToMatch[i] === " ") {
-                guessingWord.push(" ")
+            if (mWord[i] === " ") {
+                gWord.push(" ")
             } else {
-                guessingWord.push("_")
+                gWord.push("_")
             }
         }
 
@@ -104,8 +104,8 @@ $(document).ready(function () {
 
     function updateDisplay () {
         document.getElementById("totalWins").innerText = wins
-        document.getElementById("currentWord").innerText = guessingWord.join("")
-        document.getElementById("remainingGuesses").innerText = numGuess
-        document.getElementById("guessedLetters").innerText =  guessedLetters.join(" ")
+        document.getElementById("currentWord").innerText = gWord.join("")
+        document.getElementById("remainingGuesses").innerText = nGuess
+        document.getElementById("guessedLetters").innerText =  pGuessed.join(" ")
     }
 })
