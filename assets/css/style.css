@@ -1,0 +1,22 @@
+
+
+body {
+    background-image: url(../images/newyork.PNG);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 95vh;
+    color: #fefefe;
+    display: flex;
+}
+
+.container{
+    margin: auto;
+    text-align: center;
+    background: #808080;
+    max-width: 680px;
+    opacity: 0.9;
+}
+
+#currentWord{
+    letter-spacing: 10px;
+}
